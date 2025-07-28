@@ -1,0 +1,244 @@
+/* ------------------------------
+   Base Reset & Typography
+-------------------------------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #ffffff;
+  color: #333;
+  font-size: 16px;
+  line-height: 1.6;
+  
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('White_\ bg.jpeg'); 
+  background-size: cover;
+  background-position: center;
+  filter: blur(10px);          
+  z-index: -1;               
+  opacity: 0.6;              
+}
+
+
+/* ------------------------------
+   Layout & Container
+-------------------------------- */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+
+header,
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #273d64;
+  color: #ffffff;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+footer {
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  justify-content: center;
+  max-width: 1000px;
+  margin: auto;
+
+}
+
+/* ------------------------------
+   Sections / Cards
+-------------------------------- */
+section {
+  background: rgba(220, 237, 247, 0.842); 
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 20px;
+  color: #000000;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+section:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+
+.notes-area {
+  border-left: 4px solid #084BCE;
+  padding-left: 10px;
+}
+
+/* ------------------------------
+   Timer Section
+-------------------------------- */
+.timer {
+  text-align: center;
+}
+
+#time {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+/* ------------------------------
+   Buttons
+-------------------------------- */
+button {
+  padding: 10px 16px;
+  margin: 5px;
+  background-color: #0F62FE;
+  border: 1px solid #000;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+  background-color: #1a2a4b;
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Highlight class */
+.highlight {
+  color: #FFC107;
+}
+
+/* ------------------------------
+   Dark Mode
+-------------------------------- */
+body.dark {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #e0e0e0;
+  background-image: url('star_bg.jpeg');
+}
+
+body.dark::before {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('star_bg.jpeg');
+  background-size: cover;
+  background-position: center;
+  filter: blur(10px);
+  z-index: -1;
+  opacity: 0.6;
+}
+
+body.dark header,
+body.dark footer {
+  background-color: #000000;
+  color: #f1f1f1;
+  background-image: url('star_bg.jpeg');
+}
+
+body.dark section {
+  background-color: rgba(30, 30, 30, 0.6); 
+  backdrop-filter: blur(10px);         
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  color: white;
+}
+
+body.dark body.dark section:hover {
+  background-color: #2a2a2a;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+}
+
+ button {
+  background-color: #333;
+  color: #f1f1f1;
+  border: 1px solid #555;
+}
+
+body.dark button:hover {
+  background-color: #000;
+  box-shadow: 0 0 6px #ebf1fd;
+}
+
+body.dark .dark-toggle {
+  background-color: #000;
+  color: #fff;
+}
+
+/* ------------------------------
+   Dark Mode Toggle Button
+-------------------------------- */
+.dark-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  border: none;
+  background-color: #d5e1ff;
+  color: #333;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  border: 1px solid #555;
+}
+
+/* hover glow */
+body.dark button.dark-toggle:hover {
+  background-color: #1e1e1e;
+  box-shadow: 0 0 6px #eaeff8;
+}
+
+/* ------------------------------
+   Responsive Design
+-------------------------------- */
+@media (max-width: 768px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  header,
+  footer {
+    padding: 1rem;
+    text-align: center;
+  }
+
+  button {
+    display: inline-block;
+    width: auto;
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+}
+
