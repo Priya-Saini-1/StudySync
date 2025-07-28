@@ -1,5 +1,3 @@
----
-
 ## 📚 StudySync – Student Productivity Dashboard
 
 **StudySync** is a clean, responsive, and feature-rich productivity dashboard designed for students. It includes essential tools like a **To-Do List**, **Timetable**, **Pomodoro Timer**, **Notes**, and a **Motivational Quote Generator**, all in one unified interface with **Dark Mode** and **Blurred Background Effects**.
@@ -32,10 +30,9 @@
 ├── index.html
 ├── style.css
 ├── script.js
-├── assets/
-│   ├── star_bg.jpeg
-│   ├── White_bg.jpeg
-│   └── favicon.png
+│── star_bg.jpeg
+│── White_bg.jpeg
+│── favicon.png
 ```
 
 ---
@@ -83,9 +80,9 @@
 
 ### 🙌 Acknowledgements
 
-* Background images from Unsplash
+* Background images from Pinterest.
 * Icons and emojis for expressive UI
-* Inspired by tools like Notion, Todoist, and Forest app
+* Inspired by tools like Notion, Todoist, and otherapp
 
 ---
 
