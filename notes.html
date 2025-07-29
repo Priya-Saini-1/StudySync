@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notes & Motivation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --light-bg: #e7e7e7;
+        --light-card: rgba(28, 39, 75, 0.9);
+        --light-text: #ffffff;
+        --dark-bg: url("star_bg.jpeg");
+        --dark-card: rgba(14, 10, 10, 0.75);
+        --dark-text: #ffffff;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: var(--light-bg);
+        color: var(--light-text);
+        transition: all 0.3s ease;
+      }
+
+       body.dark {
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        color: #e0e0e0;
+       }
+
+       body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('White_ bg.jpeg') no-repeat center center/cover;
+  filter: blur(6px);
+  z-index: -1;
+  opacity: 0.5;
+}
+
+body.dark::before {
+  background: url('star_bg.jpeg') no-repeat center center/cover;
+  filter: blur(6px);
+  opacity: 0.6;
+}
+
+
+   
+      .container {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: auto;
+}
+
+
+      .quote-box,
+      .notes-section {
+        background: var(--light-card);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+      }
+
+      body.dark .quote-box,
+      body.dark .notes-section {
+        background: var(--dark-card);
+        box-shadow: 0 8px 24px rgba(255, 255, 255, 0.1);
+      }
+
+      .quote-box {
+        font-size: 1.3em;
+        font-weight: 500;
+      }
+
+      .notes-section h3 {
+        margin-bottom: 10px;
+        padding: 20px 24px;
+      }
+
+      textarea {
+        width: 97%;
+        height: 120px;
+        padding: 10px;
+        font-size: 1em;
+        border: none;
+        border-radius: 10px;
+        resize: vertical;
+        
+      }
+
+      button {
+        margin-top: 10px;
+        padding: 10px 20px;
+        font-size: 1em;
+        background: #545555;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background 0.3s ease;
+      }
+
+      button:hover {
+        background: #000000;
+      }
+
+      .toggle-btn {
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: #000000;
+          color: #111;
+          border: none;
+          padding: 8px 12px;
+          border-radius: 8px;
+          cursor: pointer;
+          font-weight: bold;
+          z-index: 1000;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          width: auto;          
+          display: inline-block; 
+        }
+
+        .note-card {
+          background: rgba(255, 255, 255, 0.08);
+          border-left: 4px solid #4698df;
+          padding: 12px 16px;
+          margin-top: 10px;
+          border-radius: 10px;
+          color: inherit;
+          backdrop-filter: blur(6px);
+          box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        body.dark .note-card {
+          background: rgba(255, 255, 255, 0.05);
+          border-left-color: #c8e9f8;
+        }
+
+        .delete-btn {
+          background-color: transparent;
+          color: #ff5e57;
+          border: none;
+          cursor: pointer;
+          font-size: 0.9em;
+          float: right;
+          margin-top: 5px;
+          font-weight: bold;
+          transition: color 0.2s;
+        }
+
+        .delete-btn:hover {
+          color: #ff2e2e;
+        }
+
+    </style>
+  </head>
+  <body>
+    <button class="toggle-btn" onclick="toggleMode()">🌙</button>
+    <div class="container">
+      <div class="quote-box" id="quoteBox"></div>
+
+      <div class="notes-section">
+        <h3>Your Notes</h3>
+        <textarea
+          id="notesArea"
+          placeholder="Write your thoughts here..."
+        ></textarea>
+        <br />
+        <button onclick="saveNotes()">Save Notes</button>
+        <div id="savedNotesContainer"></div>
+      </div>
+    </div>
+
+    <script>
+      const quotes = [
+        "You don't need to see the whole staircase, just take the first step.",
+        "Discipline is choosing between what you want now and what you want most.",
+        "Your future is created by what you do today, not tomorrow.",
+        "Small consistent actions lead to big results.",
+        "Make it happen. Shock everyone.",
+        "Be so consistent they question how you do it.",
+        "Rest, but don’t quit.",
+        "One day or day one. You decide.",
+      ];
+
+      function displayRandomQuote() {
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        document.getElementById("quoteBox").textContent = quotes[randomIndex];
+      }
+
+      function saveNotes() {
+  const notesText = document.getElementById("notesArea").value.trim();
+  if (!notesText) {
+    alert("Note is empty!");
+    return;
+  }
+
+  const existingNotes = JSON.parse(localStorage.getItem("notesList")) || [];
+  const newNote = {
+    id: Date.now(),
+    text: notesText,
+    time: new Date().toLocaleString()
+  };
+  existingNotes.push(newNote);
+  localStorage.setItem("notesList", JSON.stringify(existingNotes));
+  document.getElementById("notesArea").value = "";
+  renderNotes();
+}
+
+function renderNotes() {
+  const container = document.getElementById("savedNotesContainer");
+  const notes = JSON.parse(localStorage.getItem("notesList")) || [];
+
+  container.innerHTML = ""; // Clear existing notes
+
+  notes.reverse().forEach(note => {
+    const div = document.createElement("div");
+    div.className = "note-card";
+    div.innerHTML = `
+      <p>${note.text}</p>
+      <small>🕒 ${note.time}</small>
+      <button class="delete-btn" onclick="deleteNote(${note.id})">❌ Delete</button>
+    `;
+    container.appendChild(div);
+  });
+}
+
+
+// Load notes when page loads
+window.onload = () => {
+  displayRandomQuote();
+  renderNotes();
+};
+
+
+      function loadNotes() {
+        const saved = localStorage.getItem("userNotes");
+        if (saved) {
+          document.getElementById("notesArea").value = saved;
+        }
+      }
+
+      function toggleMode() {
+        document.body.classList.toggle("dark");
+        const btn = document.querySelector(".toggle-btn");
+        btn.textContent = document.body.classList.contains("dark")
+          ? "☀️"
+          : "🌙";
+      }
+
+      function deleteNote(id) {
+        let notes = JSON.parse(localStorage.getItem("notesList")) || [];
+        notes = notes.filter(note => note.id !== id);
+        localStorage.setItem("notesList", JSON.stringify(notes));
+        renderNotes();
+      }
+
+    </script>
+  </body>
+</html>

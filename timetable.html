@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🗕️ Editable Timetable</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+      color: #333;
+      transition: background 0.3s ease;
+    }
+    body.dark {
+      background-color: #1a1a1a;
+      color: #eee;
+    }
+    .container {
+      max-width: 1000px;
+      margin: auto;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: 1.8rem;
+    }
+    .back-btn, .toggle-btn {
+      padding: 8px 12px;
+      background-color: #353536;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .toggle-btn {
+      background-color: #d5e1ff;
+      color: #111;
+      border: 1px solid #555;
+    }
+    body.dark .toggle-btn {
+      background-color: #000;
+      color: #fff;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      background-color: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+    }
+    body.dark table {
+      background-color: rgba(30, 30, 30, 0.6);
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #ccc;
+      text-align: center;
+      outline: none;
+    }
+    th {
+      background-color: #111a2c;
+      color: white;
+    }
+    body.dark th {
+      background-color: #333;
+    }
+    .btn-group {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .btn-group button {
+      margin: 0 10px;
+    }
+   .cell-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 6px;
+  width: 100%;
+  min-height: 1.2em;
+  gap: 4px;
+}
+
+.cell-text {
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 4px 0;
+  outline: none;
+}
+
+.clear-cell {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  color: #dc3545;
+  font-size: 14px;
+  cursor: pointer;
+  display: none;
+  padding: 0 4px;
+}
+
+        .cell-wrapper:has(:not(:empty)) .clear-cell {
+        display: inline;
+        }
+    /* td.selected {
+      outline: 2px dashed #0F62FE;
+    } */
+    body.dark td.selected {
+      outline: 2px dashed #aad4ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <button class="back-btn" onclick="location.href='index.html'"> Back</button>
+      <h1> Timetable</h1>
+      <button class="toggle-btn" onclick="toggleMode()">🌙</button>
+    </header>
+    <table id="timetable">
+      <thead>
+        <tr id="headerRow">
+          <th>Day</th>
+          <th>1st</th>
+          <th>2nd</th>
+          <th>3rd</th>
+          <th>4th</th>
+          <th>5th</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <div class="btn-group">
+      <button onclick="saveTimetable()">📂 Save</button>
+      <button onclick="clearTimetable()">🧹 Clear</button>
+      <button onclick="addPeriod()">➕ Add Period</button>
+      <button onclick="deleteColumn()">🗑️ Delete Period</button>
+      <button onclick="clearSelectedCell()">❌ Clear Cell</button>
+    </div>
+  </div>
+  <script>
+    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    let selectedCell = null;
+
+    function handleCellClick(event) {
+      if (selectedCell) selectedCell.classList.remove('selected');
+      selectedCell = event.currentTarget;
+      selectedCell.classList.add('selected');
+    }
+
+    function generateTimetable() {
+      const tbody = document.querySelector('#timetable tbody');
+      tbody.innerHTML = '';
+      const columns = document.querySelectorAll('#timetable thead th').length - 1;
+
+      days.forEach(day => {
+        const tr = document.createElement('tr');
+        const dayCell = document.createElement('td');
+        dayCell.textContent = day;
+        tr.appendChild(dayCell);
+
+        for (let i = 0; i < columns; i++) {
+          const td = document.createElement('td');
+          td.dataset.day = day;
+          td.dataset.period = i;
+          td.classList.add("editable-cell");
+          td.innerHTML = `
+            <div class="cell-wrapper" contenteditable="true" oninput="toggleClearBtn(this)">
+              <span class="cell-text"></span>
+              <button class="clear-cell" onclick="clearCell(this)">❌</button>
+            </div>
+          `;
+          td.addEventListener('click', handleCellClick);
+          tr.appendChild(td);
+        }
+        tbody.appendChild(tr);
+      });
+      loadTimetable();
+    }
+
+    function saveTimetable() {
+      const cells = document.querySelectorAll('#timetable td');
+      const data = {};
+      cells.forEach(cell => {
+        const { day, period } = cell.dataset;
+        const wrapper = cell.querySelector('.cell-wrapper');
+        if (!wrapper) return;
+        const textSpan = wrapper.querySelector('.cell-text');
+        if (!textSpan) return;
+        const text = textSpan.textContent.trim();
+        if (!data[day]) data[day] = {};
+        data[day][period] = text;
+      });
+      localStorage.setItem('timetableData', JSON.stringify(data));
+      alert('Timetable saved!');
+    }
+
+    function loadTimetable() {
+      const data = JSON.parse(localStorage.getItem('timetableData')) || {};
+      document.querySelectorAll('#timetable td').forEach(cell => {
+        const { day, period } = cell.dataset;
+        if (data[day] && data[day][period]) {
+          const wrapper = cell.querySelector('.cell-wrapper');
+          if (wrapper) {
+            wrapper.querySelector('.cell-text').textContent = data[day][period];
+            toggleClearBtn(wrapper);
+          }
+        }
+      });
+    }
+
+    function toggleMode() {
+      document.body.classList.toggle("dark");
+      const btn = document.querySelector(".toggle-btn");
+      btn.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+    }
+
+    function clearTimetable() {
+      if (confirm("Clear all saved timetable data?")) {
+        localStorage.removeItem('timetableData');
+        generateTimetable();
+      }
+    }
+
+    function addPeriod() {
+      const headerRow = document.getElementById('headerRow');
+      const newPeriodIndex = headerRow.children.length;
+      const newTh = document.createElement('th');
+      newTh.textContent = `${newPeriodIndex}th`;
+      headerRow.appendChild(newTh);
+
+      document.querySelectorAll('#timetable tbody tr').forEach((tr, rowIndex) => {
+        const td = document.createElement('td');
+        td.dataset.day = days[rowIndex];
+        td.dataset.period = newPeriodIndex - 1;
+        td.innerHTML = `
+          <div class="cell-wrapper" contenteditable="true" oninput="toggleClearBtn(this)">
+            <span class="cell-text"></span>
+            <button class="clear-cell" onclick="clearCell(this)">❌</button>
+          </div>
+        `;
+        td.addEventListener('click', handleCellClick);
+        tr.appendChild(td);
+      });
+    }
+
+    function deleteColumn() {
+      const table = document.getElementById("timetable");
+      const colCount = table.rows[0].cells.length;
+      if (colCount <= 1) return;
+      for (let i = 0; i < table.rows.length; i++) {
+        table.rows[i].deleteCell(colCount - 1);
+      }
+    }
+
+    function toggleClearBtn(wrapper) {
+      const btn = wrapper.querySelector(".clear-cell");
+      const text = wrapper.innerText.trim();
+      btn.style.display = text.length > 0 ? "inline" : "none";
+    }
+
+    function clearSelectedCell() {
+      if (!selectedCell) {
+        alert("Please select a cell first.");
+        return;
+      }
+      const wrapper = selectedCell.querySelector('.cell-wrapper');
+      if (wrapper) {
+        const textSpan = wrapper.querySelector('.cell-text');
+        if (textSpan) textSpan.textContent = '';
+      }
+    }
+
+    function clearCell(button) {
+      const wrapper = button.closest('.cell-wrapper');
+      if (wrapper) {
+        wrapper.querySelector('.cell-text').textContent = '';
+        toggleClearBtn(wrapper);
+      }
+    }
+
+    window.onload = generateTimetable;
+  </script>
+</body>
+</html>

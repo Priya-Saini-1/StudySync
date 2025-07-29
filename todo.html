@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TO-DO LIST</title>
+    <!-- Google Font for a clean UI look -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Root variables for theme colors */
+      :root {
+        --bg-light: linear-gradient(to right, #dff6ff, #b4e4f7);
+        --bg-dark: #1e1e2f;
+        --text-light: #1a1a1a;
+        --text-dark: #f5f5f5;
+        --primary: #273d64;
+        --high: #f44336;
+        --medium: #ff9800;
+        --low: #4caf50;
+        --heading-dark: #ffffff;
+      }
+
+      /* Body styling with light theme default */
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #ffffff;
+        color: #333;
+        font-size: 16px;
+        line-height: 1.6;
+        background: var(--bg-light);
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("White_ bg.jpeg"); /* use the same file */
+        background-size: cover;
+        background-position: center;
+        filter: blur(10px);
+        z-index: -1;
+        opacity: 0.6;
+      }
+
+      /* Dark mode toggle */
+      body.dark {
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        color: #e0e0e0;
+      }
+
+      body.dark::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("star_bg.jpeg");
+        background-size: cover;
+        background-position: center;
+        filter: blur(10px);
+        z-index: -1;
+        opacity: 0.6;
+      }
+
+      /* Heading style */
+      h2 {
+        text-align: center;
+        color: var(--primary);
+        font-size: 30px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 20px;
+      }
+
+      body.dark h2 {
+        color: var(--heading-dark);
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
+      }
+
+      /* Flex layout for input and filter controls */
+      .controls,
+      .filters {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+      }
+
+      /* Input fields and dropdowns */
+      input,
+      select {
+        padding: 10px;
+        border-radius: 10px;
+        border: 2px dashed #3f51b5;
+        font-size: 14px;
+        background-color: #ffffffcc;
+        transition: border 0.3s, box-shadow 0.3s;
+      }
+
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: #ff6f91;
+        box-shadow: 0 0 8px #ffb6c1;
+      }
+
+      /* All buttons */
+      button {
+        background-color: #0f62fe;
+        color: white;
+        font-weight: bold;
+        border: 1px solid #000;
+        border-radius: 6px;
+        padding: 8px 14px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+      }
+
+      button:hover {
+        background-color: #1a2a4b;
+        transform: translateY(-4px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      body.dark button {
+        background-color: #333;
+        color: #f1f1f1;
+        border: 1px solid #555;
+      }
+
+      body.dark button:hover {
+        background-color: #000;
+        box-shadow: 0 0 6px #ebf1fd;
+      }
+
+      /* Task list styling */
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      li {
+        background: rgba(220, 237, 247, 0.842);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        border-left: 5px solid var(--primary);
+        margin-bottom: 15px;
+      }
+
+      body.dark li {
+        background-color: rgba(30, 30, 30, 0.6);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        color: white;
+      }
+
+      .task-main {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .completed {
+        text-decoration: line-through;
+        color: gray;
+      }
+
+      /* Priority color indicators */
+      .priority-high {
+        border-left-color: var(--high);
+      }
+      .priority-medium {
+        border-left-color: var(--medium);
+      }
+      .priority-low {
+        border-left-color: var(--low);
+      }
+
+      .icons button {
+        margin-left: 6px;
+        background: none;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        color: inherit;
+      }
+
+      .timestamp {
+        font-size: 12px;
+        color: gray;
+      }
+
+      .counter {
+        text-align: center;
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      .dark-toggle {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        border: none;
+        background-color: #d5e1ff;
+        color: #333;
+        padding: 8px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        border: 1px solid #555;
+      }
+
+      .input-group {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Dark mode toggle button -->
+    <div class="dark-mode-toggle">
+      <button class="dark-toggle" onclick="toggleDarkMode()">🌙</button>
+    </div>
+
+    <h2>TO-DO LIST</h2>
+
+    <!-- Controls for adding new tasks -->
+    <div class="controls">
+      <div class="input-group">
+        <input type="text" id="taskInput" placeholder="Add a new task ✍️" />
+        <select id="priority">
+          <option value="high">🔥 High Priority</option>
+          <option value="medium">⏳ Medium Priority</option>
+          <option value="low">🌿 Low Priority</option>
+        </select>
+      </div>
+      <button onclick="addTask()">➕ Add Task</button>
+      <button onclick="clearAll()">🧹 Clear All</button>
+    </div>
+
+    <!-- Filter buttons -->
+    <div class="filters">
+      <button onclick="filterTasks('all')">📋 All Tasks</button>
+      <button onclick="filterTasks('completed')">✅ Completed</button>
+      <button onclick="filterTasks('incomplete')">📌 Incomplete</button>
+    </div>
+
+    <!-- Task counter -->
+    <div class="counter" id="taskCounter"></div>
+    <ul id="taskList"></ul>
+
+    <script>
+      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      let currentFilter = "all";
+
+      // Save current task list to local storage
+      function saveTasks() {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+      }
+
+      // Add new task
+      function addTask() {
+        const text = document.getElementById("taskInput").value.trim();
+        const priority = document.getElementById("priority").value;
+        if (!text) return;
+        const newTask = {
+          id: Date.now(),
+          text,
+          priority,
+          completed: false,
+          createdAt: new Date().toLocaleString(),
+        };
+        tasks.push(newTask);
+        saveTasks();
+        renderTasks();
+        document.getElementById("taskInput").value = "";
+      }
+
+      // Toggle completion status of a task
+      function toggleComplete(id) {
+        const task = tasks.find((t) => t.id === id);
+        task.completed = !task.completed;
+        saveTasks();
+        renderTasks();
+      }
+
+      // Remove task by ID
+      function deleteTask(id) {
+        tasks = tasks.filter((t) => t.id !== id);
+        saveTasks();
+        renderTasks();
+      }
+
+      // Edit task text
+      function editTask(id) {
+        const newText = prompt("Edit your task:");
+        if (newText !== null) {
+          const task = tasks.find((t) => t.id === id);
+          task.text = newText.trim();
+          saveTasks();
+          renderTasks();
+        }
+      }
+
+      // Clear all tasks (with confirmation)
+      function clearAll() {
+        if (confirm("Are you sure you want to delete all tasks?")) {
+          tasks = [];
+          saveTasks();
+          renderTasks();
+        }
+      }
+
+      // Filter tasks by type
+      function filterTasks(type) {
+        currentFilter = type;
+        renderTasks();
+      }
+
+      // Render task list
+      function renderTasks() {
+        const list = document.getElementById("taskList");
+        list.innerHTML = "";
+        const filtered = tasks.filter((task) => {
+          if (currentFilter === "completed") return task.completed;
+          if (currentFilter === "incomplete") return !task.completed;
+          return true;
+        });
+
+        filtered.forEach((task) => {
+          const li = document.createElement("li");
+          li.className = `priority-${task.priority}`;
+
+          const main = document.createElement("div");
+          main.className = "task-main";
+
+          const span = document.createElement("span");
+          span.textContent = task.text;
+          span.className = task.completed ? "completed" : "";
+
+          const icons = document.createElement("div");
+          icons.className = "icons";
+
+          // Action buttons (complete, edit, delete)
+          icons.innerHTML = `
+          <button onclick="toggleComplete(${task.id})">✔</button>
+          <button onclick="editTask(${task.id})">✏</button>
+          <button onclick="deleteTask(${task.id})">✖</button>
+        `;
+
+          main.appendChild(span);
+          main.appendChild(icons);
+
+          const time = document.createElement("div");
+          time.className = "timestamp";
+          time.textContent = `Created: ${task.createdAt}`;
+
+          li.appendChild(main);
+          li.appendChild(time);
+          list.appendChild(li);
+        });
+
+        // Update task count
+        document.getElementById("taskCounter").textContent = `Total: ${
+          tasks.length
+        } | Completed: ${tasks.filter((t) => t.completed).length}`;
+      }
+
+      // Toggle dark/light mode
+      function toggleDarkMode() {
+        document.body.classList.toggle("dark");
+      }
+
+      // Allow pressing Enter to add task
+      document
+        .getElementById("taskInput")
+        .addEventListener("keypress", function (event) {
+          if (event.key === "Enter") {
+            addTask();
+          }
+        });
+
+      // Initial render
+      renderTasks();
+    </script>
+  </body>
+</html>
