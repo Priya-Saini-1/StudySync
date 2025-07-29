@@ -33,20 +33,19 @@ TimeTable images coming soon!!
 
 ```
 📦 StudySync/
-├── index.html
-├── style.css
-├── script.js
-│── star_bg.jpeg
-│── White_bg.jpeg
-│── favicon.png
+├── index.html          ← Dashboard
+├── todo.html           ← To-Do List
+├── notes.html          ← Notes Page
+├── timetable.html      ← Timetable Page
+├── style.css           ← Shared styles
+├── script.js           ← Shared JavaScript
+├── star_bg.jpeg        ← Dark mode background
+└── White_bg.jpeg       ← Light mode background
+
+
 ```
 
 ---
-
-### 🚀 Live Demo
-
-> *(Optional if hosted)*
-> **Check it out here →** [https://your-username.github.io/StudySync](https://your-username.github.io/StudySync)
 
 ---
 
