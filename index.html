@@ -17,20 +17,38 @@
 
   <main class="dashboard">
 
-    <section id="todo-section">
+    <section class="todo-section">
+      <a href="todo.html" class="section-link-heading">
       <h2>📝 To-Do List</h2>
-      <!-- Member 2 will fill this -->
-    </section>
+      </a>
+
+      <div class="todo-header-row">
+        <p id="taskCount">Tasks: 0</p>
+        <button class="small-btn" onclick="location.href='todo.html'">➕ Add Task</button>
+      </div>
+
+      <div id="dashboardTasksPreview"></div>
+</section>
     
-    <section id="timetable-section">
-      <h2>📅 Timetable</h2>
-      <!-- You can use a simple table here -->
-    </section>
+<section id="timetable-section">
+  <a href="timetable.html" class="section-link-heading">
+    <h2>📅 Timetable</h2>
+  </a>
+  <div id="dashboardTimetablePreview"></div>
+</section>
+
 
     <section id="pomodoro-section">
       <h2>⏱️ Pomodoro Timer</h2>
       <div class="timer">
         <p id="time">25:00</p>
+         <progress id="progressBar" max="1500" value="0"></progress>
+        <select id="timerLength">
+        <option value="1500">25 min</option>
+        <option value="3000">50 min</option>
+        <option value="600">10 min break</option>
+        </select>
+
         <div class="buttons">
           <button id="start">Start</button>
           <button id="pause">Pause</button>
@@ -39,15 +57,20 @@
       </div>
     </section>
 
-    <section id="notes-section">
-      <h2>📓 Notes</h2>
-      <!-- Member 4 will handle this -->
+<section class="notes-section">
+    <a href="notes.html" class="section-link-heading">
+    <h2>🧠 Notes</h2>
+    </a>
+    <div id="dashboardNotesPreview"></div>
+</section>
+
+
+    <section class="motivation-section">
+      <h2>💬 Motivation</h2>
+      <p id="quoteDisplay" class="quote-text">"Loading inspiration..."</p>
+      <button onclick="generateQuote()" class="small-btn">🔁 New Quote</button>
     </section>
 
-    <section id="motivation-section">
-      <h2>💬 Motivation</h2>
-      <p id="quote">"Stay focused!"</p>
-    </section>
 
   </main>
 
