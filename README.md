@@ -26,7 +26,9 @@
 <img width="1364" height="617" alt="Screenshot from 2025-07-29 22-41-46" src="https://github.com/user-attachments/assets/904e9871-b98c-40b6-8bf0-ff1e95ebebb4" />
 <img width="1364" height="617" alt="Screenshot from 2025-07-30 01-23-44" src="https://github.com/user-attachments/assets/510eb290-182a-4a99-a25a-70b0dd5afa59" />
 <img width="1364" height="617" alt="Screenshot from 2025-07-30 01-23-50" src="https://github.com/user-attachments/assets/4b78ca6f-9fba-4f91-8ef0-ab4fda81d8d5" />
-TimeTable images coming soon!!
+<img width="1361" height="622" alt="Timetable_lightmode" src="https://github.com/user-attachments/assets/90aa1671-dba2-4c68-9c9a-2e13da024b6c" />
+<img width="1361" height="622" alt="Timetable_darkMode" src="https://github.com/user-attachments/assets/7a23443a-2e2b-4c9a-8263-4cccad87643f" />
+
 ---
 
 ### 📁 Folder Structure
@@ -77,9 +79,11 @@ TimeTable images coming soon!!
 ### ✍️ Authors
 
 * **Priya Saini** (Team Lead)
-* Hritika 
-* Ishita 
-* Juhi
+ --- https://github.com/Priya-Saini-1
+* Hritika Choudhary
+ --https://github.com/Codedbyhritika
+* Ishita Bhatt
+* Juhi Sharma
 
 ---
 
