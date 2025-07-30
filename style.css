@@ -5,7 +5,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  
 }
 
 body {
@@ -14,7 +13,6 @@ body {
   color: #333;
   font-size: 16px;
   line-height: 1.6;
-  
 }
 
 body::before {
@@ -27,11 +25,10 @@ body::before {
   background-image: url('White_\ bg.jpeg'); 
   background-size: cover;
   background-position: center;
-  filter: blur(10px);          
-  z-index: -1;               
-  opacity: 0.6;              
+  filter: blur(10px);
+  z-index: -1;
+  opacity: 0.6;
 }
-
 
 /* ------------------------------
    Layout & Container
@@ -65,27 +62,26 @@ footer {
   justify-content: center;
   max-width: 1000px;
   margin: auto;
-
 }
 
 /* ------------------------------
-   Sections / Cards
+   Section Cards
 -------------------------------- */
 section {
-  background: rgba(220, 237, 247, 0.842); 
+  background: rgba(220, 237, 247, 0.842);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 15px;
   padding: 20px;
   color: #000000;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
 }
 
 section:hover {
   transform: translateY(-4px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
-
 
 .notes-area {
   border-left: 4px solid #084BCE;
@@ -107,10 +103,11 @@ section:hover {
 /* ------------------------------
    Buttons
 -------------------------------- */
-button {
+button,
+.small-btn {
   padding: 10px 16px;
   margin: 5px;
-  background-color: #0F62FE;
+  background-color: #494a4d;
   border: 1px solid #000;
   color: white;
   border-radius: 6px;
@@ -119,19 +116,149 @@ button {
   transition: all 0.3s ease-in-out;
 }
 
-button:hover {
+button:hover,
+.small-btn:hover {
   background-color: #1a2a4b;
   transform: translateY(-4px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* Highlight class */
-.highlight {
-  color: #FFC107;
+/* ------------------------------
+   To-Do Section
+-------------------------------- */
+.todo-section h2 {
+  margin-bottom: 6px;
+}
+
+.todo-section .section-title {
+  color: #0d1c3a;
+  text-decoration: none;
+  font-weight: bold;
+  margin-bottom: 4px;
+  display: inline-block;
+}
+
+.todo-footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+#taskCount {
+  background-color: #ffffffa8;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+}
+
+.todo-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+  margin-bottom: 10px;
+}
+
+
+.task-preview {
+  background: #ffffffc5;
+  border-left: 4px solid #0F62FE;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 0.9em;
+  margin-bottom: 6px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  color: #000;
+}
+
+body.dark .task-preview {
+  background-color: rgba(30, 30, 30, 0.7);
+  color: #eee;
+  border-left-color: #87baff;
 }
 
 /* ------------------------------
-   Dark Mode
+   Time table Section
+-------------------------------- */
+/* .timetable-preview {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #222;
+}
+
+body.dark .timetable-preview {
+  color: #ddd;
+} */
+
+#dashboardTimetablePreview {
+  margin-top: 12px;
+}
+
+.timetable-preview-row {
+  background: #ffffffc5;
+  border-left: 4px solid #0F62FE;
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-size: 0.9em;
+  margin-bottom: 6px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  color: #000;
+}
+
+body.dark .timetable-preview-row {
+  background-color: rgba(30, 30, 30, 0.7);
+  color: #eee;
+  border-left-color: #87baff;
+}
+
+
+/* ------------------------------
+   Notes Section
+-------------------------------- */
+.section-link-heading {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.section-link-heading:hover h2 {
+  color: #0F62FE;
+  transform: scale(1.02);
+}
+
+#dashboardNotesPreview {
+  margin-top: 12px;
+}
+
+.note-preview {
+  background: #ffffffc5;
+  border-left: 4px solid #0F62FE;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 0.9em;
+  margin-bottom: 6px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  color: #000;
+}
+
+/* ------------------------------
+   Motivation Section
+-------------------------------- */
+.quote-text {
+  font-size: 0.95rem;
+  margin-top: 10px;
+  color: #333;
+  font-style: italic;
+  min-height: 40px;
+}
+
+/* ------------------------------
+   Dark Mode Styling
 -------------------------------- */
 body.dark {
   background-size: cover;
@@ -143,53 +270,50 @@ body.dark {
 }
 
 body.dark::before {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
   background-image: url('star_bg.jpeg');
-  background-size: cover;
-  background-position: center;
   filter: blur(10px);
-  z-index: -1;
   opacity: 0.6;
 }
 
 body.dark header,
 body.dark footer {
-  background-color: #000000;
+  background-color: #000;
   color: #f1f1f1;
-  background-image: url('star_bg.jpeg');
 }
 
 body.dark section {
-  background-color: rgba(30, 30, 30, 0.6); 
-  backdrop-filter: blur(10px);         
+  background-color: rgba(30, 30, 30, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   color: white;
 }
 
-body.dark body.dark section:hover {
-  background-color: #2a2a2a;
-  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+body.dark .note-preview {
+  background-color: rgba(30, 30, 30, 0.7);
+  color: #eee;
+  border-left-color: #87baff;
 }
 
- button {
+body.dark .quote-text {
+  color: #f1f1f1;
+}
+
+body.dark .section-title,
+body.dark .section-title:visited {
+  color: #aad4ff;
+}
+
+body.dark button,
+body.dark .small-btn {
   background-color: #333;
   color: #f1f1f1;
   border: 1px solid #555;
 }
 
-body.dark button:hover {
+body.dark button:hover,
+body.dark .small-btn:hover {
   background-color: #000;
   box-shadow: 0 0 6px #ebf1fd;
-}
-
-body.dark .dark-toggle {
-  background-color: #000;
-  color: #fff;
 }
 
 /* ------------------------------
@@ -199,18 +323,17 @@ body.dark .dark-toggle {
   position: absolute;
   top: 20px;
   right: 20px;
-  border: none;
   background-color: #d5e1ff;
   color: #333;
   padding: 8px 12px;
   border-radius: 8px;
-  cursor: pointer;
   font-weight: bold;
+  cursor: pointer;
   border: 1px solid #555;
+  z-index: 999;
 }
 
-/* hover glow */
-body.dark button.dark-toggle:hover {
+body.dark .dark-toggle:hover {
   background-color: #1e1e1e;
   box-shadow: 0 0 6px #eaeff8;
 }
@@ -241,4 +364,3 @@ body.dark button.dark-toggle:hover {
     align-items: center;
   }
 }
-
